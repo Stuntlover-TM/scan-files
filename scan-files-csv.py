@@ -37,15 +37,15 @@ occurences = 0
 
 with open("search_log.csv", "w", newline="") as logfile:
     writer = csv.writer(logfile)
-    writer.writerow(["time", "search_for", "filename", "line"])
+    writer.writerow(["time", "search_for", "filename", "line_num", "line_contents"])
 
-def log(log_filename, search_file, line):
+def log(log_filename, search_file, line_num, line_contents):
     now = datetime.datetime.now()
     time = now.strftime('%Y-%m-%d_%H:%M:%S')
 
     with open(log_filename, 'a', newline="") as logfile:
         writer = csv.writer(logfile)
-        writer.writerow([time, scan_word, search_file, line])
+        writer.writerow([time, scan_word, search_file, line_num, line_contents])
 
 
 def search(path, filename, is_dir, pbar=None):
@@ -60,7 +60,7 @@ def search(path, filename, is_dir, pbar=None):
                 occurences += line_occurences
 
                 for _ in range(line_occurences):
-                    log("search_log.csv", filename, str(line_number))
+                    log("search_log.csv", filename, str(line_number), line)
                     
             if prev_file != filename:
                 prev_file = filename
